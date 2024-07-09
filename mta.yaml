@@ -17,8 +17,8 @@ modules:
     parameters:
       buildpack: nodejs_buildpack
       keep-existing-routes: true
-      disk-quota: 356M
-      memory: 356M
+      disk-quota: 512M
+      memory: 512M
     build-parameters:
       builder: npm
     provides:
