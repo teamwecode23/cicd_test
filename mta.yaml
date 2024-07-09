@@ -1,0 +1,39 @@
+_schema-version: '3.1'
+ID: ci_cd_test
+version: 1.0.0
+description: "p ."
+parameters:
+  enable-parallel-deployments: true
+build-parameters:
+  before-all:
+    - builder: custom
+      commands:
+        - npm install
+        - cds build --production
+modules:
+  - name: ci_cd_test
+    type: nodejs
+    path: gen/srv
+    parameters:
+      buildpack: nodejs_buildpack
+      keep-existing-routes: true
+      disk-quota: 356M
+      memory: 356M
+    build-parameters:
+      builder: npm
+    provides:
+      - name: srv-api # required by consumers of CAP services (e.g. approuter)
+        properties:
+          srv-url: ${default-url}
+    requires:
+      - name: cicdtestxsuaa
+ 
+  
+resources:
+  - name: cicdtestxsuaa
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: xsuaa
+      service-plan: application
+      path: ./xs-security.json
+ 
